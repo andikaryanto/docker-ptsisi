@@ -1,0 +1,84 @@
+version: '3'
+services:
+    nginx:
+        container_name: docker-ptsisi-nginx
+        build: ${NGINX_BUILD}
+        volumes:
+            - ${NGINX_CONFIG_ROOT}/etc/nginx/nginx.conf:/etc/nginx/nginx.conf
+            - ${NGINX_CONFIG_ROOT}/etc/nginx/conf.d:/etc/nginx/conf.d
+            - ${NGINX_CONFIG_ROOT}/etc/nginx/sites-available:/etc/nginx/sites-enabled
+            - ptsisi_php:/var/www/
+        ports:
+            - "9092:80"
+        restart: always
+        depends_on:
+            - php 
+        networks:
+            ptsisi_network:
+                ipv4_address: 172.30.0.2
+    php:
+        container_name: docker-ptsisi-php
+        build: 
+            context: .
+            dockerfile: ${PHP_BUILD}/Dockerfile
+        restart: always
+        volumes:
+            - ptsisi_php:/var/www/     
+            - ${PHP_FPM_CONFIG_ROOT}/usr/local/etc/php-fpm.d/www.conf:/usr/local/etc/php-fpm.d/www.conf
+        ports:
+            - "9910:9000"
+        networks:
+            ptsisi_network:
+                ipv4_address: 172.30.0.3
+    nodejs:
+        container_name: docker-ptsisi-nodejs
+        build: 
+            context: .
+            dockerfile: ${NODEJS_BUILD}/Dockerfile
+        restart: always
+        volumes:
+            - ptsisi_node:/projects
+        ports:
+            - "3021-3025:3021-3025" # Optional, expose ports for projects
+        stdin_open: true
+        tty: true
+        networks:
+            ptsisi_network:
+                ipv4_address: 172.30.0.4
+    postgres15:
+        image: postgres:15.4
+        container_name: docker-ptsisi-postgres15
+        restart: always
+        environment:
+            POSTGRES_USER: root
+            POSTGRES_PASSWORD: root
+        ports:
+            - "5433:5432"
+        volumes:
+            - ptsisi_postgres15_databases:/var/lib/postgresql/data        
+        networks:
+            ptsisi_network:
+                ipv4_address: 172.30.0.4
+    redis:
+        image: redis:7.2.6-alpine
+        restart: always
+        container_name: docker-ptsisi-redis
+        ports:
+            - "6389:6379"
+        networks:
+            ptsisi_network:
+                ipv4_address: 172.30.0.4
+
+volumes:
+    ptsisi_php:
+    ptsisi_php_litespeed:
+    ptsisi_mysql8_databases:
+    ptsisi_node:
+    ptsisi_postgres15_databases:
+
+networks:
+  ptsisi_network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.30.0.0/24
