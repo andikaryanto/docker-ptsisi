@@ -44,7 +44,7 @@ services:
         tty: true
         networks:
             ptsisi_network:
-                ipv4_address: 172.30.0.4
+                ipv4_address: 172.30.0.5
     postgres15:
         image: postgres:15.4
         container_name: docker-ptsisi-postgres15
@@ -58,7 +58,7 @@ services:
             - ptsisi_postgres15_databases:/var/lib/postgresql/data        
         networks:
             ptsisi_network:
-                ipv4_address: 172.30.0.4
+                ipv4_address: 172.30.0.6
     redis:
         image: redis:7.2.6-alpine
         restart: always
@@ -67,7 +67,7 @@ services:
             - "6389:6379"
         networks:
             ptsisi_network:
-                ipv4_address: 172.30.0.4
+                ipv4_address: 172.30.0.7
 
 volumes:
     ptsisi_php:
