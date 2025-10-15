@@ -68,8 +68,25 @@ services:
         networks:
             ptsisi_network:
                 ipv4_address: 172.30.0.7
+    minio:
+        image: quay.io/minio/minio:latest
+        container_name: docker-ptsisi-minio
+        restart: always
+        ports:
+            - "9011:9000"  # API
+            - "9010:9001"  # Console
+        environment:
+            MINIO_ROOT_USER: admin
+            MINIO_ROOT_PASSWORD: password123
+        volumes:
+            - ptsisi_minio:/data
+        command: server /data --console-address ":9001"
+        networks:
+            ptsisi_network:
+                ipv4_address: 172.30.0.8
 
 volumes:
+    ptsisi_minio:
     ptsisi_php:
     ptsisi_php_litespeed:
     ptsisi_mysql8_databases:
