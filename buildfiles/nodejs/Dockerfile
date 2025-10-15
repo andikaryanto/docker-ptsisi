@@ -12,7 +12,7 @@ RUN apt-get update && apt-get install -y git && apt-get clean
 
 # Install Yarn globally
 # RUN npm install -g yarn
-RUN npm install --global corepack@latest
+RUN npm install --global corepack@latest && corepack enable
 
 # Set the working directory (optional)
 WORKDIR /projects
