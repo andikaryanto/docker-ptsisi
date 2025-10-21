@@ -52,7 +52,9 @@ RUN docker-php-source extract \
 # Install and configure Xdebug
 RUN pecl install xdebug \
     && docker-php-ext-enable xdebug \
-    && mv /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini.disabled
+    && echo "xdebug.mode = debug" >> /usr/local/etc/php/php.ini \
+    && echo "xdebug.start_with_request = yes" >> /usr/local/etc/php/php.ini
+    # && mv /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini.disabled
 
 COPY buildfiles/php/entrypoint.sh /usr/local/bin/
 COPY buildfiles/php/laravel-crontab /etc/cron.d/
