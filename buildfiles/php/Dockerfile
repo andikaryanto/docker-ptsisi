@@ -1,4 +1,4 @@
-FROM php:8.3-fpm
+FROM php:8.4-fpm
 
 # Set environment and user
 ENV HOME /var/www
@@ -21,7 +21,6 @@ RUN apt-get update && apt-get install -y \
     gcc \
     g++ \
     make \
-    linux-headers-amd64 \
     cron \
     nano \
     dos2unix \
