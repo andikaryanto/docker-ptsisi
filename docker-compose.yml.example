@@ -98,6 +98,20 @@ services:
         networks:
             ptsisi_network:
                 ipv4_address: 172.30.0.9
+    postgres17:
+        image: postgres:17.4
+        container_name: docker-ptsisi-postgres17
+        restart: always
+        environment:
+            POSTGRES_USER: root
+            POSTGRES_PASSWORD: root
+        ports:
+            - "5434:5432"
+        volumes:
+            - ptsisi_postgres17_databases:/var/lib/postgresql/data        
+        networks:
+            ptsisi_network:
+                ipv4_address: 172.30.0.10
 
 volumes:
     ptsisi_minio:
@@ -107,6 +121,7 @@ volumes:
     ptsisi_mysql8_databases:
     ptsisi_node:
     ptsisi_postgres15_databases:
+    ptsisi_postgres17_databases:
 
 networks:
   ptsisi_network:
