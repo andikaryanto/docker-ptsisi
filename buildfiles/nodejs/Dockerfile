@@ -1,7 +1,10 @@
 # Use the official Node.js image
 # FROM node:18.20
-FROM node:22.18
+# FROM node:22.18
+FROM node:14.21-bullseye-slim
+# FROM node:12.22-bullseye-slim
 
+# FROM node:8.15.1
 # Install Git
 RUN apt-get update && apt-get install -y git && apt-get clean
 
@@ -12,7 +15,7 @@ RUN apt-get update && apt-get install -y git && apt-get clean
 
 # Install Yarn globally
 # RUN npm install -g yarn
-RUN npm install --global corepack@latest && corepack enable
+# RUN npm install --global corepack@latest && corepack enable
 
 # Set the working directory (optional)
 WORKDIR /projects
